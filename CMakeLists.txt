@@ -1,3 +1,7 @@
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -g -std=c++14 -stdlib=libc++")
+#set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
+#set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -O3")
+
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/src/System/BuildInfrastructure/Modules/)
 
 function(ee_setup_base_project ee_project_name ee_proj_directory)
@@ -44,3 +48,10 @@ function(ee_setup_bootloader ee_project_name ee_proj_directory)
     
     add_executable(${ee_project_name} ${${ee_project_name}_SRC})
 endfunction(ee_setup_bootloader)
+
+find_package(Doxygen REQUIRED)
+if (DOXYGEN_FOUND)
+  message("Doxygen is installed")
+else (DOXYGEN_FOUND)
+  message("Doxygen need to be installed to generate the doxygen documentation")
+endif (DOXYGEN_FOUND)
