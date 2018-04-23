@@ -4,6 +4,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -g -std=c++17 -stdlib=libc++")
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/src/System/BuildInfrastructure/Modules/)
 
+include (FindPkgConfig)
+if (NOT PKG_CONFIG_FOUND)
+    message (FATAL_ERROR "pkg-config not found")
+endif ()
+
 function (ee_clone_headers ee_project_name ee_proj_directory ee_header_target_dir)
     # Scan through resource folder for updated files and copy if none existing or changed
     file(GLOB ${ee_project_name}_HEADERS
