@@ -15,6 +15,9 @@ function (ee_clone_headers ee_project_name ee_proj_directory ee_header_target_di
         "${ee_proj_directory}/src/*.h"
         "${ee_proj_directory}/src/*/*.h"
         "${ee_proj_directory}/src/*/*/*.h"
+        "${ee_proj_directory}/src/*.hpp"
+        "${ee_proj_directory}/src/*/*.hpp"
+        "${ee_proj_directory}/src/*/*/*.hpp"
     )
 
     foreach(resource ${${ee_project_name}_HEADERS})
@@ -49,8 +52,6 @@ function(ee_setup_base_project ee_project_name ee_proj_directory)
 
     
     #setup tests
-    find_package(CATCH REQUIRED)
-
     file(GLOB ${ee_project_name}_TESTSRC
         "${ee_proj_directory}/test/*.cpp"
     )
@@ -58,7 +59,9 @@ function(ee_setup_base_project ee_project_name ee_proj_directory)
     add_executable(${ee_project_name}Tests ${${ee_project_name}_TESTSRC})
     add_test(NAME ${ee_project_name}Tests COMMAND ${ee_project_name}Tests)
 
-    target_include_directories(${ee_project_name}Tests PRIVATE ${CATCH_INCLUDE_DIRS})
+    #TODO: catch.hpp is currently in EssexEngineCore... that's not ideal. we should have a test project
+    #       That holds things like that... that all these projects depend on.
+    add_dependencies(${ee_project_name}Tests "EssexEngineCore_catch.hpp")
     foreach(resource ${${ee_project_name}_HEADERS})
         get_filename_component(filename ${resource} NAME)
         add_dependencies(${ee_project_name}Tests "${ee_project_name}_${filename}")
